@@ -17,12 +17,11 @@ export default async function HistoryPage({
   searchParams: { from?: string; to?: string; status?: string; q?: string };
 }) {
   const now = new Date();
-  const defaultFrom = new Date(now.getFullYear(), now.getMonth(), 1)
-    .toISOString()
-    .split("T")[0];
-  const defaultTo = new Date(now.getFullYear(), now.getMonth() + 1, 0)
-    .toISOString()
-    .split("T")[0];
+  function localDateStr(d: Date) {
+    return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+  }
+  const defaultFrom = localDateStr(new Date(now.getFullYear(), now.getMonth(), 1));
+  const defaultTo = localDateStr(new Date(now.getFullYear(), now.getMonth() + 1, 0));
 
   const from = searchParams.from || defaultFrom;
   const to = searchParams.to || defaultTo;
