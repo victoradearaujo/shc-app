@@ -5,16 +5,21 @@ export async function GET(
   req: NextRequest,
   { params }: { params: { id: string } }
 ) {
-  const booking = await prisma.booking.findUnique({
-    where: { id: params.id },
-    include: { client: true, vehicle: true, service: true },
-  });
+  try {
+    const booking = await prisma.booking.findUnique({
+      where: { id: params.id },
+      include: { client: true, vehicle: true, service: true },
+    });
 
-  if (!booking) {
-    return NextResponse.json({ error: "Booking not found" }, { status: 404 });
+    if (!booking) {
+      return NextResponse.json({ error: "Booking not found" }, { status: 404 });
+    }
+
+    return NextResponse.json(booking);
+  } catch (error) {
+    console.error("Error fetching booking:", error);
+    return NextResponse.json({ error: "Failed to fetch booking" }, { status: 500 });
   }
-
-  return NextResponse.json(booking);
 }
 
 export async function PUT(
@@ -44,6 +49,7 @@ export async function PUT(
         ...(clientId !== undefined && { clientId }),
         ...(estimatedPrice !== undefined && { estimatedPrice }),
       },
+      include: { client: true, vehicle: true, service: true },
     });
 
     return NextResponse.json(booking);
