@@ -49,6 +49,7 @@ describe("GET /api/bookings", () => {
     const res = await GET(req);
     const data = await res.json();
     expect(data).toHaveLength(1);
+    expect(new Date(data[0].bookingDate).toISOString()).toContain("2026-03-01");
   });
 
   it("filters bookings by status", async () => {
@@ -130,6 +131,8 @@ describe("POST /api/bookings", () => {
     });
     const res = await POST(req);
     expect(res.status).toBe(400);
+    const data = await res.json();
+    expect(data.error).toMatch(/required/i);
   });
 
   it("returns 400 when vehicleId is missing", async () => {
@@ -141,6 +144,8 @@ describe("POST /api/bookings", () => {
     });
     const res = await POST(req);
     expect(res.status).toBe(400);
+    const data = await res.json();
+    expect(data.error).toMatch(/required/i);
   });
 
   it("returns 400 when serviceId is missing", async () => {
@@ -152,6 +157,8 @@ describe("POST /api/bookings", () => {
     });
     const res = await POST(req);
     expect(res.status).toBe(400);
+    const data = await res.json();
+    expect(data.error).toMatch(/required/i);
   });
 
   it("returns 400 when bookingDate is missing", async () => {
@@ -163,6 +170,8 @@ describe("POST /api/bookings", () => {
     });
     const res = await POST(req);
     expect(res.status).toBe(400);
+    const data = await res.json();
+    expect(data.error).toMatch(/required/i);
   });
 });
 

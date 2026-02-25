@@ -7,6 +7,7 @@ export default defineConfig({
     environment: "node",
     globals: true,
     globalSetup: ["./tests/helpers/globalSetup.ts"],
+    setupFiles: ["./tests/helpers/mockPrisma.ts"],
     maxWorkers: 1,
     minWorkers: 1,
   },

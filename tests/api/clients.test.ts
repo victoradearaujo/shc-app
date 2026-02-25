@@ -64,12 +64,16 @@ describe("POST /api/clients", () => {
     const req = makeRequest({ firstName: "Jane", phone: "0400000002" });
     const res = await POST(req);
     expect(res.status).toBe(400);
+    const data = await res.json();
+    expect(data.error).toMatch(/required/i);
   });
 
   it("returns 400 when phone is missing", async () => {
     const req = makeRequest({ firstName: "Jane", lastName: "Smith" });
     const res = await POST(req);
     expect(res.status).toBe(400);
+    const data = await res.json();
+    expect(data.error).toMatch(/required/i);
   });
 
   it("ignores vehicles with missing make or model", async () => {
