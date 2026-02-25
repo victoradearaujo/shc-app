@@ -22,6 +22,27 @@ test.describe("Booking Flow", () => {
 
     await page.goto("/bookings/new");
     await expect(page.getByRole("heading", { name: /new booking/i })).toBeVisible();
+
+    // The form uses div-based labels (not real <label> elements), so use CSS selectors.
+    // Client is the first <select> (required, not disabled)
+    await page.locator("select").first().selectOption({ value: client.id });
+
+    // Vehicle is the second <select> - now enabled after client selection
+    await page.locator("select").nth(1).selectOption({ value: client.vehicles[0].id });
+
+    // Select the service radio button by its value (the service ID from the API)
+    await page.locator(`input[type="radio"][value="${service.id}"]`).first().click();
+
+    // Fill in the required booking date using the date input
+    await page.locator('input[type="date"]').fill("2026-04-01");
+
+    // Submit the form
+    await page.getByRole("button", { name: /save booking/i }).click();
+
+    // After successful submission the app redirects to the booking detail page.
+    // The detail page h1 shows the client's full name.
+    await expect(page).toHaveURL(/\/bookings\/[^/]+$/, { timeout: 10000 });
+    await expect(page.getByRole("heading", { name: /Booking Test/i })).toBeVisible();
   });
 
   test("views booking detail", async ({ page }) => {
@@ -57,17 +78,16 @@ test.describe("Booking Flow", () => {
     await page.goto(`/bookings/${booking.id}`);
     // Booking starts as "booked" - click Start Job to move to in_progress
     const startBtn = page.getByRole("button", { name: /start job/i });
-    if (await startBtn.isVisible()) {
-      await startBtn.click();
-      // Now status is in_progress - click Complete
-      const completeBtn = page.getByRole("button", { name: /^complete$/i });
-      await expect(completeBtn).toBeVisible({ timeout: 5000 });
-      await completeBtn.click();
-      // Confirm completion dialog appears
-      const confirmBtn = page.getByRole("button", { name: /confirm$/i });
-      await expect(confirmBtn).toBeVisible({ timeout: 5000 });
-      await confirmBtn.click();
-      await expect(page.getByText(/completed/i).first()).toBeVisible({ timeout: 5000 });
-    }
+    await expect(startBtn).toBeVisible();
+    await startBtn.click();
+    // Now status is in_progress - click Complete
+    const completeBtn = page.getByRole("button", { name: /^complete$/i });
+    await expect(completeBtn).toBeVisible({ timeout: 5000 });
+    await completeBtn.click();
+    // Confirm completion dialog appears
+    const confirmBtn = page.getByRole("button", { name: /confirm$/i });
+    await expect(confirmBtn).toBeVisible({ timeout: 5000 });
+    await confirmBtn.click();
+    await expect(page.getByText(/completed/i).first()).toBeVisible({ timeout: 5000 });
   });
 });
