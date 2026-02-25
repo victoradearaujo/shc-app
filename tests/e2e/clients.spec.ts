@@ -3,7 +3,7 @@ import { test, expect } from "@playwright/test";
 test.describe("Client Management", () => {
   test("shows clients list page", async ({ page }) => {
     await page.goto("/clients");
-    await expect(page.getByRole("heading", { name: /clients/i })).toBeVisible();
+    await expect(page.getByRole("heading", { name: "Clients", exact: true }).first()).toBeVisible();
   });
 
   test("creates a new client", async ({ page }) => {

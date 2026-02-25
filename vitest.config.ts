@@ -9,6 +9,6 @@ export default defineConfig({
     globalSetup: ["./tests/helpers/globalSetup.ts"],
     setupFiles: ["./tests/helpers/mockPrisma.ts"],
     maxWorkers: 1,
-    minWorkers: 1,
+    exclude: ["tests/e2e/**", "node_modules/**"],
   },
 });
