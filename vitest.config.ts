@@ -6,6 +6,8 @@ export default defineConfig({
   test: {
     environment: "node",
     globals: true,
-    setupFiles: ["./tests/helpers/setup.ts"],
+    globalSetup: ["./tests/helpers/globalSetup.ts"],
+    maxWorkers: 1,
+    minWorkers: 1,
   },
 });
