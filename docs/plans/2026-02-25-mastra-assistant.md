@@ -19,7 +19,7 @@
 **Step 1: Install packages**
 
 ```bash
-cd /Users/victoraugusto/Downloads/sunshine-hotcars
+cd /Users/victoraugusto/Projects/shc
 npm install @mastra/core @ai-sdk/anthropic zod
 ```
 
