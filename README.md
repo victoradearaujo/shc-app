@@ -18,7 +18,7 @@ Run these commands once when setting up the project for the first time.
 ### 1. Install dependencies
 
 ```bash
-cd /Users/victoraugusto/Downloads/sunshine-hotcars
+cd /Users/victoraugusto/Projects/shc
 npm install
 ```
 
@@ -141,3 +141,4 @@ prisma/
   seed.js              → Sample data seed script
   dev.db               → SQLite database file (created after db push)
 ```
+# shc-app
